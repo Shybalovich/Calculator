@@ -84,7 +84,7 @@
             this.butt_sum.Tag = "\"+\"";
             this.butt_sum.Text = "+";
             this.butt_sum.UseVisualStyleBackColor = true;
-            this.butt_sum.Click += new System.EventHandler(this.buttBinaryOperator_Click);
+            this.butt_sum.Click += new System.EventHandler(this.operation);
             // 
             // butt_comma
             // 
@@ -108,7 +108,7 @@
             this.butt_sub.Tag = "\"-\"";
             this.butt_sub.Text = "-";
             this.butt_sub.UseVisualStyleBackColor = true;
-            this.butt_sub.Click += new System.EventHandler(this.buttBinaryOperator_Click);
+            this.butt_sub.Click += new System.EventHandler(this.operation);
             // 
             // butt_3
             // 
@@ -151,12 +151,12 @@
             this.butt_div.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.butt_div.Location = new System.Drawing.Point(150, 168);
             this.butt_div.Name = "butt_div";
-            this.butt_div.Size = new System.Drawing.Size(40, 30);
+            this.butt_div.Size = new System.Drawing.Size(40, 31);
             this.butt_div.TabIndex = 15;
             this.butt_div.Tag = "\"/\"";
             this.butt_div.Text = "/";
             this.butt_div.UseVisualStyleBackColor = true;
-            this.butt_div.Click += new System.EventHandler(this.buttBinaryOperator_Click);
+            this.butt_div.Click += new System.EventHandler(this.operation);
             // 
             // butt_9
             // 
@@ -204,7 +204,7 @@
             this.butt_multi.Tag = "\"x\"";
             this.butt_multi.Text = "x";
             this.butt_multi.UseVisualStyleBackColor = true;
-            this.butt_multi.Click += new System.EventHandler(this.buttBinaryOperator_Click);
+            this.butt_multi.Click += new System.EventHandler(this.operation);
             // 
             // butt_6
             // 
@@ -351,7 +351,7 @@
             this.butt_root.TabIndex = 28;
             this.butt_root.Text = "√";
             this.butt_root.UseVisualStyleBackColor = true;
-            this.butt_root.Click += new System.EventHandler(this.butt_root_Click);
+            this.butt_root.Click += new System.EventHandler(this.operation);
             // 
             // butt_1divX_Click
             // 
@@ -362,7 +362,7 @@
             this.butt_1divX_Click.TabIndex = 27;
             this.butt_1divX_Click.Text = "1/x";
             this.butt_1divX_Click.UseVisualStyleBackColor = true;
-            this.butt_1divX_Click.Click += new System.EventHandler(this.butt_1divX_Click_Click);
+            this.butt_1divX_Click.Click += new System.EventHandler(this.operation);
             // 
             // butt_percent
             // 
@@ -373,7 +373,7 @@
             this.butt_percent.TabIndex = 26;
             this.butt_percent.Text = "%";
             this.butt_percent.UseVisualStyleBackColor = true;
-            this.butt_percent.Click += new System.EventHandler(this.butt_percent_Click);
+            this.butt_percent.Click += new System.EventHandler(this.operation);
             // 
             // butt_Equally
             // 
@@ -385,7 +385,7 @@
             this.butt_Equally.Tag = "null";
             this.butt_Equally.Text = "=";
             this.butt_Equally.UseVisualStyleBackColor = true;
-            this.butt_Equally.Click += new System.EventHandler(this.butt_Equally_Click);
+            this.butt_Equally.Click += new System.EventHandler(this.operation);
             // 
             // panel1
             // 
