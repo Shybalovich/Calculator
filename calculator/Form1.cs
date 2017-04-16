@@ -27,8 +27,9 @@ namespace calculator
         public delegate void MyOperator();              // объявление делигата, который в себе будет хранить метод, на выполнение операции
         KeyVal<bool, MyOperator> executableOperator;    // пара, в которой хранятся делигат выполняемого метода и информация о его выполнении
         MyOperator enterOperator;                       // объект делигата, хранит в себе выбранный оператор
-        private string buff = "";                       // временный буфер, вкоторый записываются выполненые выражения
+        private string textBuff = "";                   // временный буфер, вкоторый записываются выполненые выражения
         private bool clickButtEqually = false;          // указывает, нажата ли кнопка '='
+        private double memory;                          // дополнительная ячейка памяти, для запоминания числа (для работы с кнопками MC, MR, MS, -M, +M)
 
         public Form1()
         {
@@ -41,7 +42,7 @@ namespace calculator
             executableOperator = new KeyVal<bool, MyOperator>(false, enterOperator);     // начальная инициализация пары значений, в которой хранятся делигат выполняемого метода и информация о его выполнении
             textBox_Enter.Text = "0";
             textBox_Enter.Tag = false;                                                   // показываем, что ввод цифр еще не производился
-            // инициализация поля Tag кнопок арифметических операций объектами делигата хранящими соответствующие методы
+            // инициализация поля Tag кнопок арифметических бинарных операций объектами делигата хранящими соответствующие методы
             butt_sum.Tag = new MyOperator(sum);
             butt_sub.Tag = new MyOperator(substaction);
             butt_multi.Tag = new MyOperator(multiplication);
@@ -64,19 +65,17 @@ namespace calculator
             {
                 executableOperator = new KeyVal<bool, MyOperator>(false, enterOperator);             // добавляем операцию в очередь и помечаем, что она еще не произведена
                 textBox_Enter.Text = ((Button)sender).Text;
-                textBox_Enter.Tag = true;                                                           // помечаем, что первый символ введён
+                textBox_Enter.Tag = ((Button)sender).Text != "0" ? true : false;                     // помечаем, что первый символ введён
             }
             else if (textBox_Enter.Text.Length < 16)
             {
                 textBox_Enter.Text += ((Button)sender).Text;
             }
         }
-
         // действие по нажатию ","
         private void butt_comma_Click(object sender, EventArgs e)
         {
             previousOperatorChecks(sender, e);                                                      // проверка на предшествующий оператор (если '=', то обнуление регистров)
-
             if ((bool)textBox_Enter.Tag == false)                                                    // проверяем, был ли введён первый символ
             {
                 textBox_Enter.Text = "0,";
@@ -96,13 +95,12 @@ namespace calculator
                 clickButtEqually = false;
             }
         }
-        
-        // обработка арифметических операций
+        // обработка бинарных арифметических операций
         private void arithmeticProcessing()
         {            
             if (executableOperator.Key == false)                                // проверка на то, не была ли проведенна операция, стоящая в очереди на выполнение (входим внутрь один раз за выбор операции)
             {
-                buff = textBox_Calculating.Text + (registrEnter > 0 ? textBox_Enter.Text : string.Concat("(",textBox_Enter.Text,")")) + " ";
+                textBuff = textBox_Calculating.Text + (registrEnter >= 0 ? registrEnter.ToString() : string.Concat("(", registrEnter.ToString(), ")")) + " ";
                 if (executableOperator.Val != null)                              // проверка на наличие операции в очереди
                 {
                     executableOperator.Val.DynamicInvoke();                     // вызов метода
@@ -117,30 +115,29 @@ namespace calculator
             }
 
         }
-        
-        // действия, при нажатии кнопак, соответствующим арифметическим операциям
+        // действия, при нажатии кнопак, соответствующим бинарным арифметическим операциям
         private void buttBinaryOperator_Click(object sender, EventArgs e)
         {
             registrEnter = Convert.ToDouble(textBox_Enter.Text);                // записываем число в регистр
             arithmeticProcessing();
-            textBox_Calculating.Text = buff + ((Button)sender).Text + " ";
+            textBox_Calculating.Text = textBuff + ((Button)sender).Text + " ";
             enterOperator = (MyOperator)(((Button)sender).Tag);                 // выбираем операцию в очередь (в временный буфер)
             clickButtEqually = false;
         }
-
+        // очистка регистра ввода
         private void butt_CE_Click(object sender, EventArgs e)
         {
             textBox_Enter.Text = "0";
-            registrRes = 0;
+            registrEnter = 0;
         }
-
+        // очистка регистра ввода и результата
         private void butt_C_Click(object sender, EventArgs e)
         {
             butt_CE_Click(sender, e);
             textBox_Calculating.Text = "";
-            registrEnter = 0;
+            registrRes = 0;
         }
-
+        // действие на нажатие '='
         private void butt_Equally_Click(object sender, EventArgs e)
         {
             executableOperator = new KeyVal<bool, MyOperator>(false, enterOperator);            // добавляем операцию в очередь и помечаем, что она еще не произведена
@@ -151,14 +148,16 @@ namespace calculator
             clickButtEqually = true;
             arithmeticProcessing();
             textBox_Calculating.Text = "";
-            buff = registrRes.ToString() + " ";
+            textBuff = registrRes.ToString() + " ";
         }
-
+        // изменение знака
         private void butt_sign_Click(object sender, EventArgs e)
         {
             textBox_Enter.Text = textBox_Enter.Text[0] == '-' ? textBox_Enter.Text.Substring(1) : "-" + textBox_Enter.Text;
         }
 
+        // доработать выброс исключения
+        // получение квадратного корня
         private void butt_root_Click(object sender, EventArgs e)
         {
             registrEnter = Convert.ToDouble(textBox_Enter.Text);                          // записываем число в регистр
@@ -166,7 +165,7 @@ namespace calculator
             registrEnter = Math.Sqrt(registrEnter);
             textBox_Enter.Text = registrEnter.ToString();
         }
-
+        // возведение числа в -1 степень
         private void butt_1divX_Click_Click(object sender, EventArgs e)
         {
             registrEnter = Convert.ToDouble(textBox_Enter.Text);                          // записываем число в регистр
@@ -174,13 +173,56 @@ namespace calculator
             registrEnter = 1.0 / registrEnter;
             textBox_Enter.Text = registrEnter.ToString();
         }
-
+        // действия, при нажатии кнопки '%'
         private void butt_percent_Click(object sender, EventArgs e)
         {
             registrEnter = Convert.ToDouble(textBox_Enter.Text);                          // записываем число в регистр
             registrEnter = registrRes * registrEnter / 100;
             textBox_Calculating.Text += registrEnter.ToString() + " ";
             textBox_Enter.Text = registrEnter.ToString();
+        }
+        // отмена ввода последнего символа
+        private void butt_arrow_Click(object sender, EventArgs e)
+        {
+            if ((bool)textBox_Enter.Tag == true)
+            {
+                if(textBox_Enter.Text.Length == 1)
+                {
+                    textBox_Enter.Text = "0";
+                    textBox_Enter.Tag = false;
+                }
+                else
+                {
+                    int len = textBox_Enter.Text.Length;
+                    textBox_Enter.Text = textBox_Enter.Text.Substring(0, len - 1);
+                }
+            }
+        }
+        // записываем число в дополнительную ячейку памяти
+        private void butt_MS_Click(object sender, EventArgs e)
+        {
+            memory = Convert.ToDouble(textBox_Enter.Text);                          // записываем число в регистр
+            textBox_Enter.Tag = false;
+        }
+        // считываем число из дополнительной ячейки памяти
+        private void butt_MR_Click(object sender, EventArgs e)
+        {
+            textBox_Enter.Text = memory.ToString();
+        }
+        // очищаем дополнительную ячейку памяти
+        private void butt_MC_Click(object sender, EventArgs e)
+        {
+            memory = 0;
+        }
+        // прибавляем чисо к значению в дополнительной ячейки памяти
+        private void butt_Mplus_Click(object sender, EventArgs e)
+        {
+            memory += Convert.ToDouble(textBox_Enter.Text);
+        }
+        // отнимаем чисо из значения в дополнительной ячейки памяти
+        private void butt_Mminus_Click(object sender, EventArgs e)
+        {
+            memory -= Convert.ToDouble(textBox_Enter.Text);
         }
     }
 }

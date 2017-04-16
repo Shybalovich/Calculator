@@ -251,6 +251,7 @@
             this.butt_Mplus.TabIndex = 23;
             this.butt_Mplus.Text = "M+";
             this.butt_Mplus.UseVisualStyleBackColor = true;
+            this.butt_Mplus.Click += new System.EventHandler(this.butt_Mplus_Click);
             // 
             // butt_MS
             // 
@@ -261,6 +262,7 @@
             this.butt_MS.TabIndex = 22;
             this.butt_MS.Text = "MS";
             this.butt_MS.UseVisualStyleBackColor = true;
+            this.butt_MS.Click += new System.EventHandler(this.butt_MS_Click);
             // 
             // butt_MR
             // 
@@ -271,6 +273,7 @@
             this.butt_MR.TabIndex = 21;
             this.butt_MR.Text = "MR";
             this.butt_MR.UseVisualStyleBackColor = true;
+            this.butt_MR.Click += new System.EventHandler(this.butt_MR_Click);
             // 
             // butt_MC
             // 
@@ -281,6 +284,7 @@
             this.butt_MC.TabIndex = 20;
             this.butt_MC.Text = "MC";
             this.butt_MC.UseVisualStyleBackColor = true;
+            this.butt_MC.Click += new System.EventHandler(this.butt_MC_Click);
             // 
             // butt_sign
             // 
@@ -325,6 +329,7 @@
             this.butt_arrow.Text = "←";
             this.butt_arrow.UseCompatibleTextRendering = true;
             this.butt_arrow.UseVisualStyleBackColor = true;
+            this.butt_arrow.Click += new System.EventHandler(this.butt_arrow_Click);
             // 
             // butt_Mminus
             // 
@@ -335,6 +340,7 @@
             this.butt_Mminus.TabIndex = 29;
             this.butt_Mminus.Text = "M-";
             this.butt_Mminus.UseVisualStyleBackColor = true;
+            this.butt_Mminus.Click += new System.EventHandler(this.butt_Mminus_Click);
             // 
             // butt_root
             // 
