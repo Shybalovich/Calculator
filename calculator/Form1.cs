@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -65,10 +66,21 @@ namespace calculator
         public void sum() { registrRes += registrEnter; }
         public void substaction() { registrRes -= registrEnter; }
         public void multiplication() { registrRes *= registrEnter; }
-        public void division() 
+        public void division()
         {
-            if (registrEnter == 0) throw new MyException("Деление на 0");
-            registrRes /= registrEnter; 
+            try
+            {
+                if (registrEnter == 0)
+                {
+                    throw new MyException("Деление на 0");
+                }
+                registrRes /= registrEnter; 
+            }
+            catch(MyException ex)
+            {
+                throw;
+            }
+           
         }
         public void sgrt()
         {
@@ -129,7 +141,7 @@ namespace calculator
                     textBox_Enter.Text = registrEnter.ToString();
                 }
             }
-            catch (MyException ex) // деление на 0
+            catch (MyException ex)
             {
                 processingExeption(ex.Message);
             }
@@ -175,6 +187,10 @@ namespace calculator
                     textBox_Enter.Tag = false;                                     // показываем, что можно вводить числа с первого символа
                     executableOperator.Key = true;                                 // показываем, что операция, стоящая в очереди, произведена
                 }
+            }
+            catch (TargetInvocationException ex)
+            {
+                var z = ex;
             }
             catch (MyException ex){throw ex;}
             catch (Exception ex) {throw ex;}
